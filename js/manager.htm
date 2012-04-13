@@ -1,0 +1,340 @@
+<!--{widget}-->
+<div id="{i#id}" class="yui-navset">
+	<ul class="yui-nav">
+		<li class="selected"><a href="#{i#doc}"><em>Документы</em></a></li>
+		<li><a href="#{i#dept}"><em>Отделы</em></a></li>
+		<li><a href="#{i#status}"><em>Таблица статусов</em></a></li>
+	</ul>            
+  <div class="yui-content">
+	  <div id="{i#doc}"></div>
+	  <div id="{i#dept}"></div>
+	  <div id="{i#status}"></div>
+	</div>
+</div>
+
+<!--{docwidget}-->
+<p>
+	Поиск по входящему номеру: <input id="{i#finnum}" type="text" style="width: 130px;" />
+	&nbsp;
+	<input id="{i#bfilter}" type="button" value="Найти" /> 
+	<input id="{i#bfilterclear}" type="button" value="Сброс" /> 
+</p>
+<table width="100%">
+	<tr>
+		<td width="50%">
+			<div id='{i#pagtop}'></div>
+		</td>
+		<td width="50%">
+			<p style="text-align: right">
+					<input id="{i#bappend}" type="button" value="Добавить" />
+			</p>
+		</td>
+	</tr>
+</table>
+<div id='{i#table}'></div>
+<table width="100%">
+	<tr>
+		<td width="50%">
+			<div id='{i#pagbot}'></div>
+		</td>
+		<td width="50%" style="text-align: right">
+			&nbsp;
+		</td>
+	</tr>
+</table>
+
+<!--{doctable}-->
+<table class="bk-table-def">
+	<thead>
+		<tr>
+			<th>Вх.№</th>
+			<th>Вх.дата</th>
+			<th>Исх.№</th>
+			<th>Исх.дата</th>
+			<th>Название</th>
+			<th><label style="display: {v#rw}">Заказчик</label></th>
+			<th><label style="display: {v#rw}">Исполнитель</label></th>
+			<th></th>
+			<th></th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>{v#rows}</tbody>
+</table>
+
+<!--{docrowwait}-->
+<tr valign="top">
+	<td colspan="9">Идет загрузка данных...</td>
+</tr>
+
+<!--{docrow}-->
+<tr valign="top">
+	<td>{v#innum}</td>
+	<td>{v#indate}</td>
+	<td>{v#outnum}</td>
+	<td>{v#outdate}</td>
+	<td>{v#tl}</td>
+	<td><span style="display: {v#rw}">{v#cl}</span></td>
+	<td><span style="display: {v#rw}">{v#auser}</span></td>
+	<td><a href="#" id="{i#view}-{v#id}" style="display: {v#rwn}">Просмотр</a></td>
+	<td><a href="#" id="{i#edit}-{v#id}" style="display: {v#rw}">Править</a></td>
+	<td><a href="#" id="{i#remove}-{v#id}" style="display: none;">Удалить</a></td>
+</tr>
+
+
+<!--{doceditor}-->
+<div class='hd'>Документ</div>
+<div class='bd'>
+
+	<div class="field">
+		<table style="width: 100%"><tbody><tr>
+		
+		<td>
+		
+			<p>
+				Входящий&nbsp;номер&nbsp;<input id="{i#innum}" type="text" style="width: 130px;" />
+				Дата&nbsp;<input id="{i#indate}" type="text" style="width: 100px;" />
+			</p>
+			<p>
+				Исходящий&nbsp;номер&nbsp;<input id="{i#outnum}" type="text" style="width: 130px;" />
+				Дата&nbsp;<input id="{i#outdate}" type="text" style="width: 100px;" />
+			</p>
+		</td>
+		<td>
+			<p id="{i#acceptblock}">
+				Исполнитель: 
+				<input id="{i#baccept}" value="Принять на исполнение" type="button"/>
+				<strong><label id="{i#acceptuser}"></label></strong>
+			</p>
+		</td>
+		
+		</tr></tbody></table>
+
+		<table style="margin:10px 2px 20px 10px;"><tbody><tr>
+			<td>Название&nbsp;</td>
+			<td>
+				<textarea id="{i#tl}" style="width: 600px; height: 35px"></textarea>
+			</td>
+		</tr></tbody></table>					
+			
+		<div id="{i#ext}">
+			<p>
+				Заказчик <input id="{i#cl}" type="text" style="width: 450px;" />
+			</p>
+			<p>
+				Уведомлять на EMail <input id="{i#eml}" type="text" style="width: 350px;" />
+			</p>
+		</div>
+		
+		<div id="{i#status}"></div>
+		<div id="{i#docstat}" style="height: 300px;"></div>
+		
+		<table style="width: 100%"><tbody><tr>
+		<td>
+		
+			<div id="{i#pcmtdiv}" style="display: none;">
+				<table><tbody><tr>
+				<td>Персональное примечание:&nbsp;</td>
+				<td><textarea id="{i#pcmt}" style="width: 350px; height: 40px"></textarea></td>
+				</tr></tbody></table>			
+			</div>
+		
+		</td>
+		<td>
+			<div class="buttons right">
+				<input type="button" value="Сохранить" id="{i#bsave}" />
+				<input type="button" value="Отмена" id="{i#bcancel}" />
+				<input type="button" value="Закрыть" id="{i#bclose}" style="display: none;" />
+			</div>
+		</td>
+		</tr></tbody></table>
+	</div>
+	<input type="hidden" id="{i#msgerrdept}" value="Необходимо выбрать отдел" />
+</div>
+
+<!--{docstateditor}-->
+<div class='hd'>Статус документа</div>
+<div class='bd'>
+	<div class="field">	
+		<p id="{i#statsel}"></p>
+		<p>
+			Комментарий <br />
+			<textarea id="{i#cmt}" style="width: 550px; height: 50px;"></textarea> 
+		</p>
+		<div class="buttons right">
+			<input type="button" value="Применить" id="{i#bsave}" />
+			<input type="button" value="Отмена" id="{i#bcancel}" />
+		</div>
+	</div>
+	<input type="hidden" id="{i#msgerr}" value="Необходимо выбрать статус" />
+</div>
+
+<!--{docstwidget}-->
+<p>
+	Текущее состояние документа: '<b><label id={i#curst}>не присвоен</label></b>'
+	&nbsp;&nbsp;
+	<input type="button" value="Изменить" id="{i#bchangest}" class="btn" />
+</p>
+<div id="{i#table}" style="height: 230px; overflow-y: auto"></div>
+
+<!--{docsttable}-->
+<table class="bk-table-def">
+	<thead>
+		<tr>
+			<th>Дата</th>
+			<th>Статус</th>
+			<th>Комментарий</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>{v#rows}</tbody>
+</table>
+
+<!--{docstrowwait}-->
+<tr valign="top">
+	<td colspan="4">Идет загрузка данных...</td>
+</tr>
+
+<!--{docstrow}-->
+<tr valign="top">
+	<td>{v#dl}</td>
+	<td>{v#dp}: {v#tl}</td>
+	<td>{v#cmt}</td>
+	<td><a href="#" id="{i#edit}-{v#id}" style="display: {v#rw}">Править</a></td>
+</tr>
+
+<!--{statseltable}-->
+<select id="{i#id}" >
+	<option value="0">не присвоен</option>
+	{v#rows}
+</select>
+
+<!--{statselwait}-->
+<select id="{i#id}">
+	<option value="0">Идет загрузка данных...</option>
+</select>
+
+<!--{statselrow}-->
+<option value="{v#id}">{v#dp}: {v#tl}</option>
+
+<!--{deptwidget}-->
+<p style="text-align: right">
+	<input id="{i#bappend}" type="button" value="Добавить" />
+</p>
+<div id='{i#table}'></div>
+
+<!--{depttable}-->
+<table class="bk-table-def">
+	<thead>
+		<tr>
+			<th>Название</th>
+			<th></th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>{v#rows}</tbody>
+</table>
+
+<!--{deptrowwait}-->
+<tr valign="top">
+	<td colspan="3">Идет загрузка данных...</td>
+</tr>
+
+<!--{deptrow}-->
+<tr valign="top">
+	<td>{v#tl}</td>
+	<td><a href="#" id="{i#edit}-{v#id}">Править</a></td>
+	<td><a href="#" id="{i#remove}-{v#id}">Удалить</a></td>
+</tr>
+
+<!--{deptseltable}-->
+<select id="{i#id}" >
+	<option value="0">не присвоен</option>
+	{v#rows}
+</select>
+
+<!--{deptselwait}-->
+<select id="{i#id}">
+	<option value="0">Идет загрузка данных...</option>
+</select>
+
+<!--{deptselrow}-->
+<option value="{v#id}">{v#tl}</option>
+
+
+<!--{depteditor}-->
+<div class='hd'>Отдел</div>
+<div class='bd'>
+	<div class="field">	
+		<p>
+			Название <input id="{i#tl}" type="text" style="width: 300px;" />
+		</p>
+		<p>
+			Сортировка <input id="{i#ord}" type="text" style="width: 50px;" />
+		</p>
+		<div class="buttons right">
+			<input type="button" value="Сохранить" id="{i#bsave}" />
+			<input type="button" value="Отмена" id="{i#bcancel}" />
+		</div>
+	</div>
+</div>
+
+<!--{stwidget}-->
+<p style="text-align: right">
+	<input id="{i#bappend}" type="button" value="Добавить" />
+</p>
+<div id='{i#table}'></div>
+
+<!--{sttable}-->
+<table class="bk-table-def">
+	<thead>
+		<tr>
+			<th>Отдел</th>
+			<th>Название</th>
+			<th>Сортировка</th>
+			<th></th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>{v#rows}</tbody>
+</table>
+
+<!--{strowwait}-->
+<tr valign="top">
+	<td colspan="5">Идет загрузка данных...</td>
+</tr>
+
+<!--{strow}-->
+<tr valign="top">
+	<td>{v#dept}</td>
+	<td>{v#tl}</td>
+	<td>{v#ord}</td>
+	<td><a href="#" id="{i#edit}-{v#id}">Править</a></td>
+	<td><a href="#" id="{i#remove}-{v#id}">Удалить</a></td>
+</tr>
+
+
+<!--{steditor}-->
+<div class='hd'>Статус</div>
+<div class='bd'>
+
+	<div class="field">
+		<p>
+			Отдел <span id="{i#dept}"></span>	
+		</p>
+		<p>
+			Название <input id="{i#tl}" type="text" style="width: 300px;" />
+		</p>
+		<p>
+			Сортировка <input id="{i#ord}" type="text" style="width: 50px;" />
+		</p>
+		<p>
+			<label id="{i#eml}-lbl" for="{i#eml}">Уведомлять на EMail, если присвоен этот статус&nbsp;</label>
+			<input type="checkbox" id="{i#eml}" />
+		</p>
+		<div class="buttons right">
+			<input type="button" value="Сохранить" id="{i#bsave}" />
+			<input type="button" value="Отмена" id="{i#bcancel}" />
+		</div>
+	</div>
+</div>
