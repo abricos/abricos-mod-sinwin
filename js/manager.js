@@ -13,17 +13,12 @@ Component.requires = {
 		{name: 'sys', files: ['data.js', 'form.js', 'widgets.js', 'container.js', 'wait.js']}
 	]
 };
-Component.entryPoint = function(){
+Component.entryPoint = function(NS){
 	
 	var Dom = YAHOO.util.Dom,
 		E = YAHOO.util.Event,
 		L = YAHOO.lang;
 	
-	var NS = this.namespace, 
-		TMG = this.template; 
-	
-	var API = NS.API;
-
 	// загрузка роли пользователя
 	var isAdminRole = false,
 		SADM = 'none',
@@ -43,10 +38,7 @@ Component.entryPoint = function(){
 	}
 	var DATA = NS.data;
 	
-	var buildTemplate = function(w, templates){
-		var TM = TMG.build(templates), T = TM.data, TId = TM.idManager;
-		w._TM = TM; w._T = T; w._TId = TId;
-	};
+	var buildTemplate = this.buildTemplate;
 	
 	var DPOINT = '.';
 	var lz = function(num){
@@ -120,7 +112,7 @@ Component.entryPoint = function(){
 		}
 	};
 	NS.ManagerWidget = ManagerWidget;
-	API.showManagerWidget = function(container){
+	NS.API.showManagerWidget = function(container){
 		loadRoles(function(){
 			new NS.ManagerWidget(container);
 		});
@@ -131,8 +123,7 @@ Component.entryPoint = function(){
 		innum = innum || '';
 		var filter = innum.length > 0 ? {'innum': innum} : {};
 	
-		var TM = TMG.build('docwidget,doctable,docrow,docrowwait'), T = TM.data, TId = TM.idManager;
-		this._TM = TM, this._T = T, this._TId = TId;
+		var TM = buildTemplate(this, 'docwidget,doctable,docrow,docrowwait');
 		
 		DATA.get('statuslist');
 		
@@ -143,7 +134,6 @@ Component.entryPoint = function(){
 			filter: filter, 
 			tables: {'list': 'doclist', 'count': 'doccount'},
 			paginators: ['docwidget.pagtop', 'docwidget.pagbot']
-			
 		});
 	};
 	YAHOO.extend(DocListWidget, Brick.widget.TablePage, {
@@ -230,7 +220,7 @@ Component.entryPoint = function(){
 	});
 	NS.DocListWidget = DocListWidget;
 	
-	API.showDocListWidget = function(container){
+	NS.API.showDocListWidget = function(container){
 		loadRoles(function(){
 			
 			container = L.isString(container) ? Dom.get(container) : container;
@@ -263,10 +253,10 @@ Component.entryPoint = function(){
 		this.isNew = row.isNew();
 		
 		DocEditorPanel.superclass.constructor.call(this, {
-			modal: true, fixedcenter: true, width: '800px', resize: false
+			width: '800px', resize: false
 		});
 	};
-	YAHOO.extend(DocEditorPanel, Brick.widget.Panel, {
+	YAHOO.extend(DocEditorPanel, Brick.widget.Dialog, {
 		el: function(name){ return Dom.get(this._TId['doceditor'][name]); },
 		elv: function(name){ return Brick.util.Form.getValue(this.el(name)); },
 		setelv: function(name, value){ Brick.util.Form.setValue(this.el(name), value); },
@@ -488,11 +478,10 @@ Component.entryPoint = function(){
 		this.callback = callback;
 		
 		DocStatusEditorPanel.superclass.constructor.call(this, {
-			modal: true,
-			fixedcenter: true, width: '600px', resize: true
+			width: '600px', resize: true
 		});
 	};
-	YAHOO.extend(DocStatusEditorPanel, Brick.widget.Panel, {
+	YAHOO.extend(DocStatusEditorPanel, Brick.widget.Dialog, {
 		el: function(name){ return Dom.get(this._TId['docstateditor'][name]); },
 		elv: function(name){ return Brick.util.Form.getValue(this.el(name)); },
 		setelv: function(name, value){ Brick.util.Form.setValue(this.el(name), value); },
@@ -628,11 +617,10 @@ Component.entryPoint = function(){
 		this.callback = callback;
 		
 		DeptEditorPanel.superclass.constructor.call(this, {
-			modal: true,
-			fixedcenter: true, width: '600px', resize: true
+			width: '600px', resize: true
 		});
 	};
-	YAHOO.extend(DeptEditorPanel, Brick.widget.Panel, {
+	YAHOO.extend(DeptEditorPanel, Brick.widget.Dialog, {
 		el: function(name){ return Dom.get(this._TId['depteditor'][name]); },
 		elv: function(name){ return Brick.util.Form.getValue(this.el(name)); },
 		setelv: function(name, value){ Brick.util.Form.setValue(this.el(name), value); },
@@ -817,11 +805,10 @@ Component.entryPoint = function(){
 		this.callback = callback;
 		
 		StatusEditorPanel.superclass.constructor.call(this, {
-			modal: true,
-			fixedcenter: true, width: '600px', resize: true
+			width: '600px', resize: true
 		});
 	};
-	YAHOO.extend(StatusEditorPanel, Brick.widget.Panel, {
+	YAHOO.extend(StatusEditorPanel, Brick.widget.Dialog, {
 		el: function(name){ return Dom.get(this._TId['steditor'][name]); },
 		elv: function(name){ return Brick.util.Form.getValue(this.el(name)); },
 		setelv: function(name, value){ Brick.util.Form.setValue(this.el(name), value); },
